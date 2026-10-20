@@ -72,6 +72,7 @@ const std::vector<UAProfile> UAMatchList = {
     {"Pharos", "", "", "mixed"},
     {"Potatso", "", "", "mixed"},
     {"Quantumult%20X", "", "", "quanx"},
+    {"Quantumult X", "", "", "quanx"},
     {"Quantumult", "", "", "quan"},
     {"Qv2ray", "", "", "v2ray"},
     {"Shadowrocket", "", "", "mixed"},
@@ -297,7 +298,8 @@ std::string subconverter(RESPONSE_CALLBACK_ARGS) {
     tribool argClashNewField = getUrlArg(argument, "new_name");
     int intSurgeVer = !argSurgeVer.empty() ? to_int(argSurgeVer, 3) : 3;
     if (argTarget == "auto" || argTarget.empty() ||
-        startsWith(request.headers["User-Agent"], "Quantumult%20X"))
+        startsWith(request.headers["User-Agent"], "Quantumult%20X") ||
+        startsWith(request.headers["User-Agent"], "Quantumult X"))
         matchUserAgent(request.headers["User-Agent"], argTarget, argClashNewField, intSurgeVer);
 
     /// don't try to load groups or rulesets when generating simple subscriptions
