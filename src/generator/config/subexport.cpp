@@ -167,7 +167,10 @@ bool applyMatcher(const std::string &rule, std::string &real_rule, const Proxy &
         {ProxyType::WireGuard, "WIREGUARD"},
         {ProxyType::VLESS, "VLESS"},
         {ProxyType::Hysteria, "HYSTERIA"},
-        {ProxyType::Hysteria2, "HYSTERIA2"}
+        {ProxyType::Hysteria2, "HYSTERIA2"},
+        {ProxyType::TUIC, "TUIC"},
+        {ProxyType::AnyTLS, "ANYTLS"},
+        {ProxyType::Mieru, "MIERU"}
     };
     if (startsWith(rule, "!!GROUP=")) {
         regGetMatch(rule, group_regex, 3, 0, &target, &ret_real_rule);
@@ -1957,7 +1960,7 @@ void proxyToQuanX(std::vector<Proxy> &nodes, INIReader &ini, std::vector<Ruleset
                     }
                 }
                 break;
-             case ProxyType::AnyTLS:
+            case ProxyType::AnyTLS:
                 proxyStr = "anytls = " + hostname + ":" + port + ", password=" + password;
                 proxyStr += ", over-tls=true";
                 if (!x.SNI.empty())
@@ -1977,7 +1980,7 @@ void proxyToQuanX(std::vector<Proxy> &nodes, INIReader &ini, std::vector<Ruleset
             proxyStr += ", fast-open=" + tfo.get_str();
         if (!udp.is_undef())
             proxyStr += ", udp-relay=" + udp.get_str();
-        if (tlssecure && !scv.is_undef() &&
+        if ((tlssecure || x.Type == ProxyType::AnyTLS) && !scv.is_undef() &&
             (x.Type != ProxyType::Shadowsocks && x.Type != ProxyType::ShadowsocksR && x.Type != ProxyType::VLESS))
             proxyStr += ", tls-verification=" + scv.reverse().get_str();
         proxyStr += ", tag=" + x.Remark;
