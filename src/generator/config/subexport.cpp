@@ -1957,6 +1957,19 @@ void proxyToQuanX(std::vector<Proxy> &nodes, INIReader &ini, std::vector<Ruleset
                     }
                 }
                 break;
+             case ProxyType::AnyTLS:
+                proxyStr = "anytls = " + hostname + ":" + port + ", password=" + password;
+                proxyStr += ", over-tls=true";
+                if (!x.SNI.empty())
+                    proxyStr += ", tls-host=" + x.SNI;
+                else if (!host.empty())
+                    proxyStr += ", tls-host=" + host;
+                if (!x.PublicKey.empty()) {
+                    proxyStr += ", reality-base64-pubkey=" + x.PublicKey;
+                    if (!x.ShortId.empty())
+                        proxyStr += ", reality-hex-shortid=" + x.ShortId;
+                }
+                break;
             default:
                 continue;
         }
